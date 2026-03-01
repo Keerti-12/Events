@@ -1,0 +1,39 @@
+# Django Core
+Django>=4.2,<5.0
+djangorestframework>=3.14.0
+django-cors-headers>=4.3.0
+
+# Database
+psycopg2-binary>=2.9.9
+
+# Image Processing
+Pillow>=10.0.0
+
+# Rich Text Editor
+django-ckeditor>=6.5.1
+
+# Production Server
+gunicorn>=21.2.0
+whitenoise>=6.6.0
+
+# Environment Variables
+python-dotenv>=1.0.0
+python-decouple>=3.8
+
+# Email
+django-anymail>=10.2
+
+# JWT Authentication
+djangorestframework-simplejwt>=5.3.0
+
+# API Documentation
+drf-spectacular>=0.26.5
+
+# Development
+django-debug-toolbar>=4.2.0
+
+# Image Optimization
+django-imagekit>=5.0.0
+
+# Pagination
+django-filter>=23.4

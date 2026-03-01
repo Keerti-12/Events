@@ -1,0 +1,4 @@
+# Procfile for Heroku / Railway deployment
+
+web: gunicorn luckyevent.wsgi:application --log-file -
+release: python manage.py migrate --no-input
