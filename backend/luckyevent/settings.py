@@ -233,6 +233,19 @@ CORS_ALLOW_CREDENTIALS = True
 # -------------------------------------------------------------------
 
 CKEDITOR_UPLOAD_PATH = 'uploads/'
+CKEDITOR_RESTRICT_BY_USER = True
+CKEDITOR_BROWSE_SHOW_DIRS = True
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 300,
+        'width': '100%',
+        'removePlugins': 'elementspath',
+        'resize_enabled': True,
+    },
+}
 
 # -------------------------------------------------------------------
 # EMAIL
