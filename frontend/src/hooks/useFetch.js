@@ -22,8 +22,10 @@ export const useFetch = (fetchFunction, dependencies = [], options = {}) => {
     setError(null)
     try {
       const response = await fetchFunction(...args)
-      setData(response.data)
-      return response.data
+      // Handle paginated responses (data.results) or direct data
+      const result = response.data?.results !== undefined ? response.data.results : response.data
+      setData(result)
+      return result
     } catch (err) {
       setError(err)
       throw err

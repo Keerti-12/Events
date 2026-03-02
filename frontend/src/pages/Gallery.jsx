@@ -18,7 +18,10 @@ const Gallery = () => {
     const fetchCategories = async () => {
       try {
         const response = await getGalleryCategories()
-        setCategories([{ code: 'all', name: 'All', count: 0 }, ...response.data])
+        // Handle paginated responses (data.results) or direct arrays (data)
+        const categoriesData = response.data?.results || response.data || []
+        const categoriesArray = Array.isArray(categoriesData) ? categoriesData : []
+        setCategories([{ code: 'all', name: 'All', count: 0 }, ...categoriesArray])
       } catch (error) {
         console.error('Error fetching categories:', error)
         // Use default categories
@@ -43,14 +46,17 @@ const Gallery = () => {
           params.category = activeCategory
         }
         const response = await getGallery(params)
+        // Handle paginated responses (data.results) or direct arrays (data)
+        const galleryData = response.data?.results || response.data || []
+        const galleryArray = Array.isArray(galleryData) ? galleryData : []
         
         if (page === 1) {
-          setGallery(response.data.results || response.data)
+          setGallery(galleryArray)
         } else {
-          setGallery(prev => [...prev, ...(response.data.results || response.data)])
+          setGallery(prev => [...prev, ...galleryArray])
         }
         
-        setHasMore(response.data.next !== null)
+        setHasMore(response.data?.next !== null && response.data?.next !== undefined)
       } catch (error) {
         console.error('Error fetching gallery:', error)
         // Use default gallery items
