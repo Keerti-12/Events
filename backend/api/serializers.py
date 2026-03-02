@@ -3,6 +3,7 @@ Serializers for Lucky Event DJ API.
 """
 
 from rest_framework import serializers
+from django.conf import settings
 from .models import Service, Gallery, Testimonial, ContactInquiry, BookingRequest, SiteSettings
 
 
@@ -69,16 +70,18 @@ class GallerySerializer(serializers.ModelSerializer):
         if obj.image:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+                image_url = obj.image.url if obj.image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.image.url}'
+                return request.build_absolute_uri(image_url)
+            return obj.image.url if obj.image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.image.url}'
         return None
     
     def get_thumbnail(self, obj):
         if obj.thumbnail:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.thumbnail.url)
-            return obj.thumbnail.url
+                thumb_url = obj.thumbnail.url if obj.thumbnail.url.startswith('/') else f'{settings.MEDIA_URL}{obj.thumbnail.url}'
+                return request.build_absolute_uri(thumb_url)
+            return obj.thumbnail.url if obj.thumbnail.url.startswith('/') else f'{settings.MEDIA_URL}{obj.thumbnail.url}'
         return None
 
 
@@ -99,16 +102,18 @@ class GalleryListSerializer(serializers.ModelSerializer):
         if obj.image:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.image.url)
-            return obj.image.url
+                image_url = obj.image.url if obj.image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.image.url}'
+                return request.build_absolute_uri(image_url)
+            return obj.image.url if obj.image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.image.url}'
         return None
     
     def get_thumbnail(self, obj):
         if obj.thumbnail:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.thumbnail.url)
-            return obj.thumbnail.url
+                thumb_url = obj.thumbnail.url if obj.thumbnail.url.startswith('/') else f'{settings.MEDIA_URL}{obj.thumbnail.url}'
+                return request.build_absolute_uri(thumb_url)
+            return obj.thumbnail.url if obj.thumbnail.url.startswith('/') else f'{settings.MEDIA_URL}{obj.thumbnail.url}'
         return None
 
 
@@ -129,8 +134,9 @@ class TestimonialSerializer(serializers.ModelSerializer):
         if obj.client_image:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.client_image.url)
-            return obj.client_image.url
+                image_url = obj.client_image.url if obj.client_image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.client_image.url}'
+                return request.build_absolute_uri(image_url)
+            return obj.client_image.url if obj.client_image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.client_image.url}'
         return None
 
 
@@ -149,8 +155,9 @@ class TestimonialListSerializer(serializers.ModelSerializer):
         if obj.client_image:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.client_image.url)
-            return obj.client_image.url
+                image_url = obj.client_image.url if obj.client_image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.client_image.url}'
+                return request.build_absolute_uri(image_url)
+            return obj.client_image.url if obj.client_image.url.startswith('/') else f'{settings.MEDIA_URL}{obj.client_image.url}'
         return None
 
 
@@ -235,14 +242,16 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
         if obj.logo:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.logo.url)
-            return obj.logo.url
+                logo_url = obj.logo.url if obj.logo.url.startswith('/') else f'{settings.MEDIA_URL}{obj.logo.url}'
+                return request.build_absolute_uri(logo_url)
+            return obj.logo.url if obj.logo.url.startswith('/') else f'{settings.MEDIA_URL}{obj.logo.url}'
         return None
     
     def get_favicon(self, obj):
         if obj.favicon:
             request = self.context.get('request')
             if request:
-                return request.build_absolute_uri(obj.favicon.url)
-            return obj.favicon.url
+                favicon_url = obj.favicon.url if obj.favicon.url.startswith('/') else f'{settings.MEDIA_URL}{obj.favicon.url}'
+                return request.build_absolute_uri(favicon_url)
+            return obj.favicon.url if obj.favicon.url.startswith('/') else f'{settings.MEDIA_URL}{obj.favicon.url}'
         return None
