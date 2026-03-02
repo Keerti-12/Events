@@ -37,12 +37,23 @@ ALLOWED_HOSTS = config(
 # APPLICATIONS
 # -------------------------------------------------------------------
 
+# Cloudinary must be added BEFORE django.contrib.staticfiles
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+]
+
+# Add Cloudinary apps before staticfiles (only when configured)
+if config('CLOUDINARY_URL', default=None):
+    INSTALLED_APPS += [
+        'cloudinary_storage',
+        'cloudinary',
+    ]
+
+INSTALLED_APPS += [
     'django.contrib.staticfiles',
 
     # Third-party
@@ -57,13 +68,6 @@ INSTALLED_APPS = [
     # Local
     'api',
 ]
-
-# Cloudinary storage apps (only when configured)
-if CLOUDINARY_URL:
-    INSTALLED_APPS += [
-        'cloudinary_storage',
-        'cloudinary',
-    ]
 
 # Only enable debug toolbar in development
 if DEBUG:
@@ -186,10 +190,21 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Enable WhiteNoise to serve media files in production (fallback when Cloudinary not configured)
-# WARNING: On Render, filesystem is ephemeral - uploaded files will be lost on redeploy
-# For persistent storage, use Cloudinary or S3-compatible storage
-if not CLOUDINARY_URL:
+# Cloudinary Configuration (when CLOUDINARY_URL is set)
+CLOUDINARY_URL = config('CLOUDINARY_URL', default=None)
+
+if CLOUDINARY_URL:
+    # Use Cloudinary for media storage
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=None),
+        'API_KEY': config('CLOUDINARY_API_KEY', default=None),
+        'API_SECRET': config('CLOUDINARY_API_SECRET', default=None),
+    }
+else:
+    # Fallback: Local filesystem (WARNING: ephemeral on Render)
+    # Files will be deleted on every deploy/restart
     WHITENOISE_AUTOREFRESH = DEBUG
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_ROOT = MEDIA_ROOT
@@ -199,15 +214,8 @@ if not CLOUDINARY_URL:
         '.png': 'image/png',
         '.gif': 'image/gif',
         '.webp': 'image/webp',
-    }
-
-# Use Cloudinary for media when configured
-if CLOUDINARY_URL:
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-    CLOUDINARY_STORAGE = {
-        'CLOUDINARY_URL': CLOUDINARY_URL,
-        'SECURE': True,
-        'MEDIA_TAG': config('CLOUDINARY_MEDIA_TAG', default='luckyevent'),
+        '.mp4': 'video/mp4',
+        '.webm': 'video/webm',
     }
 
 # -------------------------------------------------------------------
