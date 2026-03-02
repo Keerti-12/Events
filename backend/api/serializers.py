@@ -6,22 +6,9 @@ from rest_framework import serializers
 from .models import Service, Gallery, Testimonial, ContactInquiry, BookingRequest, SiteSettings
 
 
-class AbsoluteURLImageField(serializers.ImageField):
-    """Custom ImageField that returns absolute URLs."""
-    
-    def to_representation(self, value):
-        if not value:
-            return None
-        
-        request = self.context.get('request')
-        if request is not None:
-            return request.build_absolute_uri(value.url)
-        return value.url
-
-
 class ServiceSerializer(serializers.ModelSerializer):
     """Serializer for Service model."""
-    image = AbsoluteURLImageField(read_only=True)
+    image = serializers.SerializerMethodField()
     
     class Meta:
         model = Service
@@ -31,11 +18,19 @@ class ServiceSerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
 
 
 class ServiceListSerializer(serializers.ModelSerializer):
     """Lightweight serializer for Service list view."""
-    image = AbsoluteURLImageField(read_only=True)
+    image = serializers.SerializerMethodField()
     
     class Meta:
         model = Service
@@ -43,12 +38,20 @@ class ServiceListSerializer(serializers.ModelSerializer):
             'id', 'title', 'slug', 'short_description',
             'icon', 'image', 'price_range', 'is_featured', 'order'
         ]
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
 
 
 class GallerySerializer(serializers.ModelSerializer):
     """Serializer for Gallery model."""
-    image = AbsoluteURLImageField(read_only=True)
-    thumbnail = AbsoluteURLImageField(read_only=True)
+    image = serializers.SerializerMethodField()
+    thumbnail = serializers.SerializerMethodField()
     category_display = serializers.CharField(source='get_category_display', read_only=True)
     media_type_display = serializers.CharField(source='get_media_type_display', read_only=True)
     
@@ -61,12 +64,28 @@ class GallerySerializer(serializers.ModelSerializer):
             'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
+    
+    def get_thumbnail(self, obj):
+        if obj.thumbnail:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.thumbnail.url)
+            return obj.thumbnail.url
+        return None
 
 
 class GalleryListSerializer(serializers.ModelSerializer):
     """Lightweight serializer for Gallery list view."""
-    image = AbsoluteURLImageField(read_only=True)
-    thumbnail = AbsoluteURLImageField(read_only=True)
+    image = serializers.SerializerMethodField()
+    thumbnail = serializers.SerializerMethodField()
     category_display = serializers.CharField(source='get_category_display', read_only=True)
     
     class Meta:
@@ -75,11 +94,27 @@ class GalleryListSerializer(serializers.ModelSerializer):
             'id', 'title', 'media_type', 'category', 'category_display',
             'image', 'video_url', 'thumbnail', 'is_featured'
         ]
+    
+    def get_image(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
+    
+    def get_thumbnail(self, obj):
+        if obj.thumbnail:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.thumbnail.url)
+            return obj.thumbnail.url
+        return None
 
 
 class TestimonialSerializer(serializers.ModelSerializer):
     """Serializer for Testimonial model."""
-    client_image = AbsoluteURLImageField(read_only=True)
+    client_image = serializers.SerializerMethodField()
     
     class Meta:
         model = Testimonial
@@ -89,11 +124,19 @@ class TestimonialSerializer(serializers.ModelSerializer):
             'is_featured', 'order', 'created_at', 'updated_at'
         ]
         read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_client_image(self, obj):
+        if obj.client_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.client_image.url)
+            return obj.client_image.url
+        return None
 
 
 class TestimonialListSerializer(serializers.ModelSerializer):
     """Lightweight serializer for Testimonial list view."""
-    client_image = AbsoluteURLImageField(read_only=True)
+    client_image = serializers.SerializerMethodField()
     
     class Meta:
         model = Testimonial
@@ -101,6 +144,14 @@ class TestimonialListSerializer(serializers.ModelSerializer):
             'id', 'client_name', 'client_title', 'client_image',
             'event_type', 'content', 'rating', 'is_featured'
         ]
+    
+    def get_client_image(self, obj):
+        if obj.client_image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.client_image.url)
+            return obj.client_image.url
+        return None
 
 
 class ContactInquirySerializer(serializers.ModelSerializer):
@@ -167,8 +218,8 @@ class BookingRequestAdminSerializer(serializers.ModelSerializer):
 
 class SiteSettingsSerializer(serializers.ModelSerializer):
     """Serializer for SiteSettings model."""
-    logo = AbsoluteURLImageField(read_only=True)
-    favicon = AbsoluteURLImageField(read_only=True)
+    logo = serializers.SerializerMethodField()
+    favicon = serializers.SerializerMethodField()
     
     class Meta:
         model = SiteSettings
@@ -179,3 +230,19 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
             'youtube_url', 'tiktok_url',
             'meta_description', 'meta_keywords', 'google_maps_embed'
         ]
+    
+    def get_logo(self, obj):
+        if obj.logo:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.logo.url)
+            return obj.logo.url
+        return None
+    
+    def get_favicon(self, obj):
+        if obj.favicon:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.favicon.url)
+            return obj.favicon.url
+        return None
