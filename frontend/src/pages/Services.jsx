@@ -15,7 +15,9 @@ const Services = () => {
     const fetchServices = async () => {
       try {
         const response = await getServices()
-        setServices(response.data)
+        // Handle paginated responses (data.results) or direct arrays (data)
+        const servicesData = response.data?.results || response.data || []
+        setServices(Array.isArray(servicesData) ? servicesData : [])
       } catch (error) {
         console.error('Error fetching services:', error)
       } finally {

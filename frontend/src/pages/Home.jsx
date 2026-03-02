@@ -24,9 +24,14 @@ const Home = () => {
           getGalleryFeatured(),
           getTestimonialsFeatured(),
         ])
-        setServices(servicesRes.data.slice(0, 4))
-        setGallery(galleryRes.data.slice(0, 6))
-        setTestimonials(testimonialsRes.data.slice(0, 3))
+        // Handle paginated responses (data.results) or direct arrays (data)
+        const servicesData = servicesRes.data?.results || servicesRes.data || []
+        const galleryData = galleryRes.data?.results || galleryRes.data || []
+        const testimonialsData = testimonialsRes.data?.results || testimonialsRes.data || []
+        
+        setServices(Array.isArray(servicesData) ? servicesData.slice(0, 4) : [])
+        setGallery(Array.isArray(galleryData) ? galleryData.slice(0, 6) : [])
+        setTestimonials(Array.isArray(testimonialsData) ? testimonialsData.slice(0, 3) : [])
       } catch (error) {
         console.error('Error fetching data:', error)
       } finally {
