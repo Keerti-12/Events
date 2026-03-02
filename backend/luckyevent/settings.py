@@ -181,7 +181,15 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Create empty static folder in project root to avoid collectstatic errors
 STATICFILES_DIRS = []
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# Use simpler storage to avoid WhiteNoise manifest issues with CKEditor
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+    },
+}
 
 # -------------------------------------------------------------------
 # MEDIA FILES
@@ -195,7 +203,9 @@ CLOUDINARY_URL = config('CLOUDINARY_URL', default=None)
 
 if CLOUDINARY_URL:
     # Use Cloudinary for media storage
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    STORAGES["default"] = {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    }
     
     CLOUDINARY_STORAGE = {
         'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=None),
@@ -205,6 +215,9 @@ if CLOUDINARY_URL:
 else:
     # Fallback: Local filesystem (WARNING: ephemeral on Render)
     # Files will be deleted on every deploy/restart
+    STORAGES["default"] = {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    }
     WHITENOISE_AUTOREFRESH = DEBUG
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_ROOT = MEDIA_ROOT
