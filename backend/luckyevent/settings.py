@@ -39,7 +39,6 @@ ALLOWED_HOSTS = config(
 
 # Cloudinary must be added BEFORE django.contrib.staticfiles
 INSTALLED_APPS = [
-    'jazzmin',  # Modern admin theme - MUST be before django.contrib.admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -369,106 +368,5 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
         'level': 'INFO',
-    },
-}
-
-# -------------------------------------------------------------------
-# JAZZMIN ADMIN THEME CONFIGURATION
-# -------------------------------------------------------------------
-
-JAZZMIN_SETTINGS = {
-    # Title
-    "site_title": "Lucky Event DJ Admin",
-    "site_header": "Lucky Event DJ",
-    "site_brand": "Lucky Event DJ",
-    "site_logo": None,
-    "login_logo": None,
-    "site_icon": None,
-    "welcome_sign": "Welcome to Lucky Event DJ Admin Panel",
-    "copyright": "Lucky Event DJ",
-    
-    # Search model from navbar
-    "search_model": "api.Service",
-    
-    # Show sidebar
-    "show_sidebar": True,
-    "navigation_expanded": True,
-    
-    # Hide apps and/or models
-    "hide_apps": [],
-    "hide_models": [],
-    
-    # Custom icons for apps/models
-    "icons": {
-        "auth": "fas fa-users-cog",
-        "auth.user": "fas fa-user",
-        "auth.Group": "fas fa-users",
-        "api.Service": "fas fa-music",
-        "api.Gallery": "fas fa-images",
-        "api.Testimonial": "fas fa-comments",
-        "api.BookingRequest": "fas fa-calendar-check",
-        "api.ContactInquiry": "fas fa-envelope",
-        "api.SiteSettings": "fas fa-cog",
-    },
-    
-    # Icons for top menu
-    "topmenu_links": [
-        {"name": "Home",  "url": "admin:index", "permissions": ["auth.view_user"]},
-        {"name": "View Site", "url": "https://lucky-event-dj.vercel.app", "new_window": True},
-    ],
-    
-    # Show user dropdown or not
-    "usermenu_links": [
-        {"model": "auth.user"},
-    ],
-    
-    # Side Menu ordering
-    "order_with_respect_to": [
-        "api",
-        "auth",
-    ],
-    
-    # Custom CSS/JS
-    "custom_css": None,
-    "custom_js": None,
-    
-    # Use modals instead of popups
-    "related_modal_active": False,
-    
-    # UI Tweaks
-    "changeform_format": "horizontal_tabs",
-    "changeform_format_overrides": {
-        "auth.user": "collapsible",
-        "auth.group": "vertical_tabs",
-    },
-}
-
-JAZZMIN_UI_TWEAKS = {
-    "navbar_small_text": False,
-    "footer_small_text": False,
-    "body_small_text": False,
-    "brand_small_text": False,
-    "brand_colour": "navbar-dark",
-    "accent": "accent-primary",
-    "navbar": "navbar-dark",
-    "no_navbar_border": False,
-    "navbar_fixed": False,
-    "layout_boxed": False,
-    "footer_fixed": False,
-    "sidebar_fixed": False,
-    "sidebar": "sidebar-dark-primary",
-    "sidebar_nav_small_text": False,
-    "sidebar_disable_expand": False,
-    "sidebar_nav_legacy_style": False,
-    "sidebar_nav_flat_style": False,
-    "theme": "default",
-    "dark_mode_theme": None,
-    "button_classes": {
-        "primary": "btn-primary",
-        "secondary": "btn-secondary",
-        "info": "btn-info",
-        "warning": "btn-warning",
-        "danger": "btn-danger",
-        "success": "btn-success",
     },
 }
