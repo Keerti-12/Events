@@ -39,8 +39,6 @@ ALLOWED_HOSTS = config(
 
 # Cloudinary must be added BEFORE django.contrib.staticfiles
 INSTALLED_APPS = [
-    'admin_interface',
-    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -184,18 +182,17 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = []
 
 # Django 4.2+ STORAGES setting
-# Use basic static storage without compression to avoid collectstatic errors
+# Use WhiteNoise's storage backend for compression and caching
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
 
 # WhiteNoise will still serve files efficiently via middleware
-WHITENOISE_AUTOREFRESH = DEBUG
 
 # -------------------------------------------------------------------
 # MEDIA FILES
