@@ -79,7 +79,6 @@ if DEBUG:
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -175,63 +174,59 @@ USE_TZ = True
 # STATIC FILES
 # -------------------------------------------------------------------
 
-STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-
-# Create empty static folder in project root to avoid collectstatic errors
-STATICFILES_DIRS = []
-
-# Django 4.2+ STORAGES setting
-# Use basic static files storage (WhiteNoise middleware still serves files efficiently)
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    },
-    "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
-    },
-}
-
-# WhiteNoise will still serve files efficiently via middleware
 
 # -------------------------------------------------------------------
 # MEDIA FILES
 # -------------------------------------------------------------------
 
-MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# Cloudinary Configuration (when CLOUDINARY_URL is set)
+# -------------------------------------------------------------------
+# CLOUDINARY CONFIGURATION
+# -------------------------------------------------------------------
+
+# Cloudinary credentials
 CLOUDINARY_URL = config('CLOUDINARY_URL', default=None)
+CLOUDINARY_CLOUD_NAME = config('CLOUDINARY_CLOUD_NAME', default=None)
+CLOUDINARY_API_KEY = config('CLOUDINARY_API_KEY', default=None)
+CLOUDINARY_API_SECRET = config('CLOUDINARY_API_SECRET', default=None)
 
 if CLOUDINARY_URL:
-    # Use Cloudinary for media storage
-    STORAGES["default"] = {
-        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    # Use Cloudinary for BOTH static and media files
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': CLOUDINARY_CLOUD_NAME,
+        'API_KEY': CLOUDINARY_API_KEY,
+        'API_SECRET': CLOUDINARY_API_SECRET,
     }
     
-    CLOUDINARY_STORAGE = {
-        'CLOUD_NAME': config('CLOUDINARY_CLOUD_NAME', default=None),
-        'API_KEY': config('CLOUDINARY_API_KEY', default=None),
-        'API_SECRET': config('CLOUDINARY_API_SECRET', default=None),
+    # Static files (CSS, JS, Django admin) via Cloudinary
+    STATIC_URL = f'https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/raw/upload/static/'
+    
+    # Media files (user uploads) via Cloudinary
+    MEDIA_URL = f'https://res.cloudinary.com/{CLOUDINARY_CLOUD_NAME}/image/upload/'
+    
+    # Django 4.2+ STORAGES setting
+    STORAGES = {
+        "default": {
+            "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "cloudinary_storage.storage.StaticHashedCloudinaryStorage",
+        },
     }
 else:
-    # Fallback: Local filesystem (WARNING: ephemeral on Render)
-    # Files will be deleted on every deploy/restart
-    STORAGES["default"] = {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-    }
-    WHITENOISE_AUTOREFRESH = DEBUG
-    WHITENOISE_USE_FINDERS = True
-    WHITENOISE_ROOT = MEDIA_ROOT
-    WHITENOISE_MIMETYPES = {
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.png': 'image/png',
-        '.gif': 'image/gif',
-        '.webp': 'image/webp',
-        '.mp4': 'video/mp4',
-        '.webm': 'video/webm',
+    # Fallback to local filesystem (development only)
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+    
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
     }
 
 # -------------------------------------------------------------------
