@@ -211,8 +211,8 @@ if CLOUDINARY_URL:
             "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
         "staticfiles": {
-            # Use CompressedStaticFilesStorage (no manifest checking to avoid CKEditor errors)
-            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+            # Basic storage - WhiteNoise middleware handles serving
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
 else:
@@ -222,7 +222,7 @@ else:
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
         },
     }
 
