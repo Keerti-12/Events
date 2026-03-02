@@ -167,9 +167,9 @@ Check Render logs for Django errors. Common issues:
 ### Static Files Not Loading
 Verify `whitenoise` is in `INSTALLED_APPS` and middleware is configured.
 
+
 ### Database Connection Issues
 Verify `DATABASE_URL` is using the Internal Database URL (not External).
-
 ---
 
 ## Local Development After Deployment

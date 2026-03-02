@@ -49,6 +49,20 @@ class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
         featured = self.queryset.filter(is_featured=True)
         serializer = ServiceListSerializer(featured, many=True)
         return Response(serializer.data)
+    
+    @action(detail=False, methods=['get'])
+    def debug(self, request):
+        """Debug endpoint to check all services."""
+        all_services = Service.objects.all()
+        active_services = Service.objects.filter(is_active=True)
+        return Response({
+            'total_count': all_services.count(),
+            'active_count': active_services.count(),
+            'all_services': [
+                {'id': s.id, 'title': s.title, 'is_active': s.is_active}
+                for s in all_services
+            ]
+        })
 
 
 class GalleryViewSet(viewsets.ReadOnlyModelViewSet):
