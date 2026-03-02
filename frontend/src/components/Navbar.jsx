@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <span className="text-2xl font-display font-bold gradient-text">
-              Lucky Event DJ
+              Lucky Event DJ & Decoration
             </span>
           </Link>
 

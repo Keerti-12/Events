@@ -2,12 +2,12 @@ import { Helmet } from 'react-helmet-async'
 
 const SEO = ({
   title = '',
-  description = 'Lucky Event DJ - Premium DJ services for weddings, corporate events, and private parties. Professional sound, lighting, and entertainment.',
-  keywords = 'DJ, event DJ, wedding DJ, party DJ, corporate events, music entertainment',
+  description = 'Lucky Event DJ & Decoration - Premium DJ services and event decoration for weddings, corporate events, and private parties. Professional sound, lighting, and stunning décor.',
+  keywords = 'DJ, event DJ, wedding DJ, party DJ, corporate events, event decoration, wedding decoration, party decoration, event planning, music entertainment, event styling',
   image = '/og-image.jpg',
   url = '',
 }) => {
-  const siteTitle = 'Lucky Event DJ'
+  const siteTitle = 'Lucky Event DJ & Decoration'
   const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle
 
   return (
@@ -32,7 +32,7 @@ const SEO = ({
 
       {/* Additional SEO */}
       <meta name="robots" content="index, follow" />
-      <meta name="author" content="Lucky Event DJ" />
+      <meta name="author" content="Lucky Event DJ & Decoration" />
       <link rel="canonical" href={url} />
     </Helmet>
   )

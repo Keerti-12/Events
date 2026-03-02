@@ -13,11 +13,11 @@ const Footer = () => {
   ]
 
   const services = [
-    'Wedding DJ',
+    'Wedding DJ & Decoration',
     'Corporate Events',
     'Private Parties',
-    'Club Nights',
-    'Festival DJ',
+    'Birthday Celebrations',
+    'Theme Decoration',
     'Sound & Lighting',
   ]
 
@@ -38,12 +38,12 @@ const Footer = () => {
           <div className="space-y-6">
             <Link to="/" className="inline-block">
               <span className="text-2xl font-display font-bold gradient-text">
-                Lucky Event DJ
+                Lucky Event DJ & Decoration
               </span>
             </Link>
             <p className="text-dark-400 text-sm leading-relaxed">
-              Premium DJ services for weddings, corporate events, and private parties. 
-              Creating unforgettable musical experiences since 2010.
+              Premium DJ services and event decoration for weddings, corporate events, and private parties. 
+              Creating unforgettable experiences with music and stunning décor since 2010.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social, index) => (

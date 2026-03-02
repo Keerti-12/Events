@@ -34,14 +34,14 @@ const Home = () => {
               transition={{ duration: 0.8 }}
             >
               <span className="inline-block px-4 py-2 bg-gold/20 border border-gold/30 rounded-full text-gold text-sm font-medium mb-6">
-                Premium Event Entertainment
+                DJ Services & Event Decoration
               </span>
               <h1 className="text-5xl md:text-7xl font-display font-bold text-white leading-tight mb-6">
-                Creating <span className="gradient-text">Unforgettable</span> Musical Experiences
+                Creating <span className="gradient-text">Unforgettable</span> Experiences with Music & Décor
               </h1>
               <p className="text-xl text-dark-300 mb-8 max-w-2xl">
                 From intimate gatherings to grand celebrations, we bring the perfect blend of 
-                music, energy, and entertainment to make your event truly memorable.
+                professional DJ services and stunning event decoration to make your occasion truly memorable.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/booking" className="btn-primary">
