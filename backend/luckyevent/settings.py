@@ -181,15 +181,19 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 # Create empty static folder in project root to avoid collectstatic errors
 STATICFILES_DIRS = []
 
-# Use simpler storage to avoid WhiteNoise manifest issues with CKEditor
+# Django 4.2+ STORAGES setting
+# Use basic static storage without compression to avoid collectstatic errors
 STORAGES = {
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
     },
 }
+
+# WhiteNoise will still serve files efficiently via middleware
+WHITENOISE_AUTOREFRESH = DEBUG
 
 # -------------------------------------------------------------------
 # MEDIA FILES
