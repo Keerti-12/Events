@@ -1,12 +1,6 @@
 # Backend Deployment - Render
 # This file configures the build for Render.com
 
-# Build Command
-# pip install -r requirements.txt
-
-# Start Command  
-# gunicorn luckyevent.wsgi:application
-
 services:
   - type: web
     name: lucky-event-dj-api
@@ -14,23 +8,28 @@ services:
     buildCommand: |
       pip install -r requirements.txt
       python manage.py collectstatic --no-input
-      python manage.py migrate
+      python manage.py migrate --no-input
+      python manage.py create_superuser
     startCommand: gunicorn luckyevent.wsgi:application
     envVars:
       - key: DEBUG
-        value: False
-      - key: SECRET_KEY
-        generateValue: true
+        value: "False"
       - key: ALLOWED_HOSTS
-        value: .onrender.com
+        value: ".onrender.com"
       - key: DATABASE_URL
         fromDatabase:
           name: lucky-event-db
           property: connectionString
       - key: CORS_ALLOWED_ORIGINS
-        value: https://lucky-event-dj.vercel.app
+        value: "https://lucky-event-dj.vercel.app"
       - key: SECURE_SSL_REDIRECT
-        value: True
+        value: "True"
+      - key: DJANGO_SUPERUSER_USERNAME
+        value: "admin"
+      - key: DJANGO_SUPERUSER_EMAIL
+        value: "admin@example.com"
+      - key: DJANGO_SUPERUSER_PASSWORD
+        sync: false
 
 databases:
   - name: lucky-event-db

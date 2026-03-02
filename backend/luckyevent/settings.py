@@ -19,7 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY
 # -------------------------------------------------------------------
 
-SECRET_KEY = config('SECRET_KEY')
+# Hardcoded SECRET_KEY for deployment (no env var needed)
+SECRET_KEY = 'django-insecure-lk8dj3v9x2m7p5q1w4e6r8t0y3u5i7o9a2s4d6f8g0h1j3'
 
 DEBUG = config('DEBUG', default=False, cast=bool)
 
