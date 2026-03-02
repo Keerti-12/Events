@@ -2,7 +2,8 @@ import { FaWhatsapp } from 'react-icons/fa'
 import { motion } from 'framer-motion'
 
 const WhatsAppButton = () => {
-  const phoneNumber = '8923979745'
+  // WhatsApp requires digits only - no hyphens, spaces, or special characters
+  const phoneNumber = '918923979745'
   const message = 'Hello! I would like to inquire about your DJ services.'
   
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`
