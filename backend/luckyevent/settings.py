@@ -211,7 +211,8 @@ if CLOUDINARY_URL:
             "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            # Use CompressedStaticFilesStorage (no manifest checking to avoid CKEditor errors)
+            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
         },
     }
 else:
@@ -221,17 +222,9 @@ else:
             "BACKEND": "django.core.files.storage.FileSystemStorage",
         },
         "staticfiles": {
-            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+            "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
         },
     }
-
-# -------------------------------------------------------------------
-# WHITENOISE CONFIGURATION
-# -------------------------------------------------------------------
-
-# Prevent WhiteNoise from crashing on missing files (e.g., CKEditor's broken references)
-WHITENOISE_MANIFEST_STRICT = False
-WHITENOISE_AUTOREFRESH = DEBUG
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY
