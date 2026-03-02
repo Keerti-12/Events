@@ -278,6 +278,13 @@ SPECTACULAR_SETTINGS = {
 # PRODUCTION SECURITY
 # -------------------------------------------------------------------
 
+# CSRF trusted origins (required for Django 4+ with HTTPS)
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='https://lucky-event-dj-api.onrender.com,https://events-three-phi.vercel.app',
+    cast=Csv()
+)
+
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
