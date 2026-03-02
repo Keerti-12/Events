@@ -43,6 +43,12 @@ class ServiceViewSet(viewsets.ReadOnlyModelViewSet):
             return ServiceListSerializer
         return ServiceSerializer
     
+    def get_serializer_context(self):
+        """Pass request context for absolute URL generation."""
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+    
     @action(detail=False, methods=['get'])
     def featured(self, request):
         """Get featured services only."""
@@ -86,6 +92,12 @@ class GalleryViewSet(viewsets.ReadOnlyModelViewSet):
             return GalleryListSerializer
         return GallerySerializer
     
+    def get_serializer_context(self):
+        """Pass request context for absolute URL generation."""
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
+    
     @action(detail=False, methods=['get'])
     def featured(self, request):
         """Get featured gallery items only."""
@@ -121,6 +133,12 @@ class TestimonialViewSet(viewsets.ReadOnlyModelViewSet):
         if self.action == 'list':
             return TestimonialListSerializer
         return TestimonialSerializer
+    
+    def get_serializer_context(self):
+        """Pass request context for absolute URL generation."""
+        context = super().get_serializer_context()
+        context['request'] = self.request
+        return context
     
     @action(detail=False, methods=['get'])
     def featured(self, request):

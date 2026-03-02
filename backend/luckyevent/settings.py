@@ -9,6 +9,9 @@ from datetime import timedelta
 from decouple import config, Csv
 import dj_database_url
 
+# Optional: Cloudinary URL for media storage
+CLOUDINARY_URL = config('CLOUDINARY_URL', default=None)
+
 # -------------------------------------------------------------------
 # BASE DIRECTORY
 # -------------------------------------------------------------------
@@ -54,6 +57,13 @@ INSTALLED_APPS = [
     # Local
     'api',
 ]
+
+# Cloudinary storage apps (only when configured)
+if CLOUDINARY_URL:
+    INSTALLED_APPS += [
+        'cloudinary_storage',
+        'cloudinary',
+    ]
 
 # Only enable debug toolbar in development
 if DEBUG:
@@ -175,6 +185,30 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Enable WhiteNoise to serve media files in production (fallback when Cloudinary not configured)
+# WARNING: On Render, filesystem is ephemeral - uploaded files will be lost on redeploy
+# For persistent storage, use Cloudinary or S3-compatible storage
+if not CLOUDINARY_URL:
+    WHITENOISE_AUTOREFRESH = DEBUG
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_ROOT = MEDIA_ROOT
+    WHITENOISE_MIMETYPES = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+        '.webp': 'image/webp',
+    }
+
+# Use Cloudinary for media when configured
+if CLOUDINARY_URL:
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+    CLOUDINARY_STORAGE = {
+        'CLOUDINARY_URL': CLOUDINARY_URL,
+        'SECURE': True,
+        'MEDIA_TAG': config('CLOUDINARY_MEDIA_TAG', default='luckyevent'),
+    }
 
 # -------------------------------------------------------------------
 # DEFAULT PRIMARY KEY

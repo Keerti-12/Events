@@ -173,6 +173,10 @@ EMAIL_HOST_USER=your-email@gmail.com
 EMAIL_HOST_PASSWORD=your-app-password
 DEFAULT_FROM_EMAIL=Lucky Event DJ <noreply@luckyeventdj.com>
 ADMIN_EMAIL=admin@luckyeventdj.com
+
+# Media Storage (Cloudinary)
+CLOUDINARY_URL=cloudinary://<api_key>:<api_secret>@<cloud_name>
+CLOUDINARY_MEDIA_TAG=luckyevent
 ```
 
 ### Frontend (.env)

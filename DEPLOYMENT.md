@@ -67,10 +67,31 @@ Add these environment variables in the Render dashboard:
 
 > **Gmail App Password**: Go to Google Account → Security → 2-Step Verification → App passwords → Generate
 
+**Optional Media Storage (Cloudinary - Recommended for Production):**
+| Key | Value |
+|-----|-------|
+| `CLOUDINARY_URL` | `cloudinary://<api_key>:<api_secret>@<cloud_name>` |
+
+> **Without Cloudinary**: Images are stored on Render's ephemeral filesystem and **will be deleted on every deploy/restart**. For persistent media storage, use Cloudinary (free tier available) or AWS S3.
+
 5. Click **Create Web Service**
 6. Wait for deployment (2-5 minutes)
 7. Note your backend URL: `https://lucky-event-dj-api.onrender.com`
 8. Superuser is automatically created during build using the env vars above
+
+### ⚠️ Important: Media Files Limitation on Render
+
+**Render Free Tier has ephemeral storage** - uploaded images/files are **deleted on every deploy or restart**.
+
+**Solutions:**
+1. **Cloudinary (Recommended)**: Free tier includes 25GB storage + CDN
+   - Sign up at [cloudinary.com](https://cloudinary.com)
+   - Add `CLOUDINARY_URL` to Render environment variables
+   - Redeploy backend
+   
+2. **AWS S3**: Use `django-storages` with S3-compatible storage (requires paid S3 account)
+
+3. **Testing Only**: Without external storage, you'll need to re-upload images after each deploy
 
 ---
 
